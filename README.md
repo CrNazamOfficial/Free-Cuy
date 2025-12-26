@@ -12,6 +12,6 @@
 
 ## 🚀 Quick Install (Termux)
 pkg install -y git php curl
-git clone https://github.com/NAZ-HUB/captcha-phishing
-cd captcha-phishing
+git clone https://github.com/CrNazamOfficial/Free-Cuy
+cd Free-Cuy
 bash start.sh
